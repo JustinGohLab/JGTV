@@ -58,7 +58,7 @@ function initDouban() {
     // 设置豆瓣开关的初始状态
     const doubanToggle = document.getElementById('doubanToggle');
     if (doubanToggle) {
-        const isEnabled = 'true';
+        const isEnabled = localStorage.getItem('doubanEnabled') === 'true';
         doubanToggle.checked = isEnabled;
         
         // 设置开关外观
@@ -177,11 +177,11 @@ function fillAndSearch(title) {
             // 使用HTML5 History API更新URL，不刷新页面
             window.history.pushState(
                 { search: safeTitle }, 
-                `搜索: ${safeTitle} - JGTV`, 
+                `搜索: ${safeTitle} - LibreTV`, 
                 `/s=${encodedQuery}`
             );
             // 更新页面标题
-            document.title = `搜索: ${safeTitle} - JGTV`;
+            document.title = `搜索: ${safeTitle} - LibreTV`;
         } catch (e) {
             console.error('更新浏览器历史失败:', e);
         }
@@ -237,11 +237,11 @@ async function fillAndSearchWithDouban(title) {
             // 使用HTML5 History API更新URL，不刷新页面
             window.history.pushState(
                 { search: safeTitle }, 
-                `搜索: ${safeTitle} - JGTV`, 
+                `搜索: ${safeTitle} - LibreTV`, 
                 `/s=${encodedQuery}`
             );
             // 更新页面标题
-            document.title = `搜索: ${safeTitle} - JGTV`;
+            document.title = `搜索: ${safeTitle} - LibreTV`;
         } catch (e) {
             console.error('更新浏览器历史失败:', e);
         }
