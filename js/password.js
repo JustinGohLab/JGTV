@@ -14,7 +14,7 @@ function isPasswordProtected() {
     const isAdminPwdValid = typeof adminPwd === 'string' && adminPwd.length === 64 && !/^0+$/.test(adminPwd);
 
     // 任意一个密码有效即认为启用了密码保护
-    return isPwdValid && isAdminPwdValid;
+    return isPwdValid || isAdminPwdValid;
 }
 
 window.isPasswordProtected = isPasswordProtected;
@@ -181,9 +181,10 @@ function initPasswordProtection() {
     }
     
     // 检查是否有普通密码
-    const hasNormalPassword = window.__ENV__?.PASSWORD && 
-                           window.__ENV__.PASSWORD.length === 64 && 
-                           !/^0+$/.test(window.__ENV__.PASSWORD);
+    //const hasNormalPassword = window.__ENV__?.PASSWORD && 
+    //                       window.__ENV__.PASSWORD.length === 64 && 
+    //                       !/^0+$/.test(window.__ENV__.PASSWORD);
+    const hasNormalPassword = false;
     
     // 只有当设置了普通密码且未验证时才显示密码框
     if (hasNormalPassword && !isPasswordVerified()) {
