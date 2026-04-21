@@ -526,6 +526,7 @@ function renderDoubanCards(data, container) {
             // 处理图片URL
             // 1. 直接使用豆瓣图片URL (添加no-referrer属性)
             const originalCoverUrl = item.cover;
+            console.log('aa1:', item);
             console.log('aa:', originalCoverUrl);
             
             // 2. 也准备代理URL作为备选
