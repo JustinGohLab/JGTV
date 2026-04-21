@@ -525,10 +525,13 @@ function renderDoubanCards(data, container) {
             
             // 处理图片URL
             // 1. 直接使用豆瓣图片URL (添加no-referrer属性)
-            const originalCoverUrl = "";
-            if (item.cover && item.cover.endsWith('.webp')) {
+            const originalCoverUrl = item.cover;
+            
+            // 2. 也准备代理URL作为备选
+            const newUrl = encodeURIComponent(originalCoverUrl);
+            if (newUrl && newUrl.endsWith('.webp')) {
                 const image = new Image();
-                image.src = item.cover;
+                image.src = newUrl;
             
                 image.onload = function() {
                     // Create a canvas to draw the WebP image
@@ -538,17 +541,13 @@ function renderDoubanCards(data, container) {
                     canvas.height = image.height;
                     ctx.drawImage(image, 0, 0);
                     const jpgDataUrl = canvas.toDataURL('image/jpeg');
-                    originalCoverUrl = jpgDataUrl;
-                    console.log('Original cover (no conversion):', originalCoverUrl);
+                    newUrl = jpgDataUrl;
+                    console.log('Original cover (conversion):', newUrl);
                 };
             } else {
-                originalCoverUrl = item.cover;
-                console.log('Original cover (no conversion):', originalCoverUrl);
+                console.log('Original cover (no conversion):', newUrl);
             }
-            console.log('aa:', originalCoverUrl);
-            
-            // 2. 也准备代理URL作为备选
-            const proxiedCoverUrl = PROXY_URL + encodeURIComponent(originalCoverUrl);
+            const proxiedCoverUrl = PROXY_URL + newUrl;
             
             // 为不同设备优化卡片布局
             card.innerHTML = `
