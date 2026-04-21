@@ -511,6 +511,8 @@ function renderDoubanCards(data, container) {
         // 循环创建每个影视卡片
         data.subjects.forEach(item => {
             const card = document.createElement("div");
+            console.log('aa:', card);
+            console.log('bb:', item);
             card.className = "bg-[#111] hover:bg-[#222] transition-all duration-300 rounded-lg overflow-hidden flex flex-col transform hover:scale-105 shadow-md hover:shadow-lg";
             
             // 生成卡片内容，确保安全显示（防止XSS）
@@ -528,30 +530,12 @@ function renderDoubanCards(data, container) {
             const originalCoverUrl = item.cover;
             
             // 2. 也准备代理URL作为备选
-            const newUrl = encodeURIComponent(originalCoverUrl);
-            if (newUrl && newUrl.endsWith('.webp')) {
-                const image = new Image();
-                image.src = newUrl;
-            
-                image.onload = function() {
-                    // Create a canvas to draw the WebP image
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = image.width;
-                    canvas.height = image.height;
-                    ctx.drawImage(image, 0, 0);
-                    const jpgDataUrl = canvas.toDataURL('image/jpeg');
-                    newUrl = jpgDataUrl;
-                    console.log('Original cover (conversion):', newUrl);
-                };
-            } else {
-                console.log('Original cover (no conversion):', newUrl);
-            }
-            const proxiedCoverUrl = PROXY_URL + newUrl;
+            const proxiedCoverUrl = PROXY_URL + encodeURIComponent(originalCoverUrl);
             
             // 为不同设备优化卡片布局
             card.innerHTML = `
                 <div class="relative w-full aspect-[2/3] overflow-hidden cursor-pointer" onclick="fillAndSearchWithDouban('${safeTitle}')">
+                    <source srcset="${originalCoverUrl}" type="image/webp">
                     <img src="${originalCoverUrl}" alt="${safeTitle}" 
                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                         onerror="this.onerror=null; this.src='${proxiedCoverUrl}'; this.classList.add('object-contain');"
