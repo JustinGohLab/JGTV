@@ -525,6 +525,7 @@ function renderDoubanCards(data, container) {
             
             // 处理图片URL
             // 1. 直接使用豆瓣图片URL (添加no-referrer属性)
+            const originalCoverUrl = "";
             if (item.cover && item.cover.endsWith('.webp')) {
                 const image = new Image();
                 image.src = item.cover;
@@ -537,11 +538,14 @@ function renderDoubanCards(data, container) {
                     canvas.height = image.height;
                     ctx.drawImage(image, 0, 0);
                     const jpgDataUrl = canvas.toDataURL('image/jpeg');
-                    const originalCoverUrl = jpgDataUrl;
+                    originalCoverUrl = jpgDataUrl;
+                    console.log('Original cover (no conversion):', originalCoverUrl);
                 };
             } else {
-                const originalCoverUrl = item.cover;
+                originalCoverUrl = item.cover;
+                console.log('Original cover (no conversion):', originalCoverUrl);
             }
+            console.log('aa:', originalCoverUrl);
             
             // 2. 也准备代理URL作为备选
             const proxiedCoverUrl = PROXY_URL + encodeURIComponent(originalCoverUrl);
